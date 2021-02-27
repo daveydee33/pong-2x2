@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Pong With Mouse and 4 Paddles</title>
   <style>
     .paddle {
       position: fixed;
@@ -15,13 +15,11 @@
     .paddle-horizontal {
       width: 100px;
       height: 20px;
-      left: 0;
     }
 
     .paddle-vertical {
       width: 20px;
       height: 100px;
-      top: 0;
     }
 
     .paddle-top {
@@ -41,9 +39,10 @@
     }
 
     .ball {
+      position: fixed;
       height: 25px;
       width: 25px;
-      background-color: rgb(62, 5, 95);
+      background-color: purple;
       border-radius: 50%;
       display: inline-block;
     }
@@ -52,18 +51,19 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-right: -50%;
+      /* margin-right: -50%; */
       transform: translate(-50%, -50%)
     }
 
   </style>
   <script>
+    document.addEventListener("click", moveBall);
     document.onmousemove = handleMouseMove;
 
     function handleMouseMove(event) {
       event = event || window.event; // IE
-      const X = event.pageX;
-      const Y = event.pageY;
+      const mouseX = event.pageX;
+      const mouseY = event.pageY;
       
       const top = document.querySelector('.paddle-top');
       const bottom = document.querySelector('.paddle-bottom');
@@ -75,14 +75,37 @@
 
       // not sure if forEach and Arrow functions work natively yet.
       horizontals.forEach((paddle) => {
-        paddle.style.left = (X - 50) + "px"; // do template literals `` work yet?
+        paddle.style.left = (mouseX - 50) + "px"; // do template literals `` work yet?
       })
       
       verticals.forEach((paddle) => {
-        paddle.style.top = (Y - 50) + "px";
+        paddle.style.top = (mouseY - 50) + "px";
       })
     }
-  </script>
+
+    function moveBall() {
+      const ball = document.querySelector('.ball');
+      let counter = 0;
+      let top;
+      let left
+      const interval = setInterval(go, 10);
+      function go(){ 
+        console.log('ball',  ball.offsetTop, ball.offsetLeft)
+        top = ball.offsetTop;
+        left = ball.offsetLeft;
+
+        if (counter > 100) { 
+          clearInterval(interval)
+        } else {
+          ball.style.top = (top + 2) + "px";
+          ball.style.left = (left + 2) + "px";
+          counter++;
+        }
+      }
+    }
+
+    // document.addEventListener('DOMContentLoaded', moveBall(), false)
+</script>
 </head>
 <body>
   <div class="paddle paddle-horizontal paddle-top"></div>
@@ -90,10 +113,10 @@
   <div class="paddle paddle-vertical paddle-left"></div>
   <div class="paddle paddle-vertical paddle-right"></div>
 
-  <span class="ball"></span>
+  <div class="ball"></div>
 
   <div class="center">
-    <h1>Yo..</h1>
+    <h1>Click to start.</h1>
   </div>
 
 </body>
