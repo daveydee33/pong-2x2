@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .paddle {
+      position: fixed;
+      background-color: lightseagreen;
+    }
+
+    .paddle-horizontal {
+      width: 100px;
+      left: 0;
+    }
+
+    .paddle-vertical {
+      height: 100px;
+    }
+
+    .paddle-top {
+      top: 0;
+    }
+
+    .paddle-bottom {
+      bottom: 0%;
+    }
+
+    .paddle-left {
+      left: 0;
+    }
+
+    .paddle-right {
+      right: 0;
+    }
+
+    .text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <script>
+    document.onmousemove = handleMouseMove;
+
+    function handleMouseMove(event) {
+      event = event || window.event; // IE
+
+      const posX = event.pageX;
+      
+      const top = document.querySelector('.paddle-top');
+      top.style.left = (posX - 50) + "px";
+      
+      console.log(event.pageX, event.pageY)
+
+      
+    }
+  </script>
+</head>
+<body>
+  
+
+  <div class="paddle paddle-horizontal paddle-top">Top</div>
+  <div class="paddle paddle-horizontal paddle-bottom">Bottom</div>
+  <div class="paddle paddle-vertical paddle-left">Left</div>
+  <div class="paddle paddle-vertical paddle-right">Right</div>
+
+  <h1 class="text">Yo..</h1>
+
+</body>
+</html>
