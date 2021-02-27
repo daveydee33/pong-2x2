@@ -9,15 +9,19 @@
     .paddle {
       position: fixed;
       background-color: lightseagreen;
+      text-align: center;
     }
 
     .paddle-horizontal {
       width: 100px;
+      height: 20px;
       left: 0;
     }
 
     .paddle-vertical {
+      width: 20px;
       height: 100px;
+      top: 0;
     }
 
     .paddle-top {
@@ -36,38 +40,61 @@
       right: 0;
     }
 
-    .text {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .ball {
+      height: 25px;
+      width: 25px;
+      background-color: rgb(62, 5, 95);
+      border-radius: 50%;
+      display: inline-block;
     }
+
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-right: -50%;
+      transform: translate(-50%, -50%)
+    }
+
   </style>
   <script>
     document.onmousemove = handleMouseMove;
 
     function handleMouseMove(event) {
       event = event || window.event; // IE
-
-      const posX = event.pageX;
+      const X = event.pageX;
+      const Y = event.pageY;
       
       const top = document.querySelector('.paddle-top');
-      top.style.left = (posX - 50) + "px";
-      
-      console.log(event.pageX, event.pageY)
+      const bottom = document.querySelector('.paddle-bottom');
+      const left = document.querySelector('.paddle-left');
+      const right = document.querySelector('.paddle-right');
 
+      const horizontals = document.querySelectorAll('.paddle-horizontal')
+      const verticals = document.querySelectorAll('.paddle-vertical')
+
+      // not sure if forEach and Arrow functions work natively yet.
+      horizontals.forEach((paddle) => {
+        paddle.style.left = (X - 50) + "px"; // do template literals `` work yet?
+      })
       
+      verticals.forEach((paddle) => {
+        paddle.style.top = (Y - 50) + "px";
+      })
     }
   </script>
 </head>
 <body>
-  
+  <div class="paddle paddle-horizontal paddle-top"></div>
+  <div class="paddle paddle-horizontal paddle-bottom"></div>
+  <div class="paddle paddle-vertical paddle-left"></div>
+  <div class="paddle paddle-vertical paddle-right"></div>
 
-  <div class="paddle paddle-horizontal paddle-top">Top</div>
-  <div class="paddle paddle-horizontal paddle-bottom">Bottom</div>
-  <div class="paddle paddle-vertical paddle-left">Left</div>
-  <div class="paddle paddle-vertical paddle-right">Right</div>
+  <span class="ball"></span>
 
-  <h1 class="text">Yo..</h1>
+  <div class="center">
+    <h1>Yo..</h1>
+  </div>
 
 </body>
 </html>
