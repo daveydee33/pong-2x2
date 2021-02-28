@@ -4,12 +4,23 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pong With Mouse and 4 Paddles</title>
+  <title>Pong 2x2</title>
   <style>
+    html,body {
+      height: 100%;
+      width:  100%;
+      padding: 0;
+      margin: 0;
+      border: 1px solid orange;
+    }
+    * {
+      box-sizing:border-box;
+    }
+
     .paddle {
-      position: fixed;
+      position: fixed; 
+      /* fixed or absolute? */
       background-color: lightseagreen;
-      text-align: center;
     }
 
     .paddle-horizontal {
@@ -27,7 +38,7 @@
     }
 
     .paddle-bottom {
-      bottom: 0%;
+      bottom: 0;
     }
 
     .paddle-left {
@@ -45,18 +56,34 @@
       background-color: purple;
       border-radius: 50%;
       display: inline-block;
+      /* Starting position */
+      top: 123px;
+      left: 123px;
     }
 
-    .center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      /* margin-right: -50%; */
-      transform: translate(-50%, -50%)
+    .container-horizontal {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      border: 1px solid red;
     }
 
+    .container-vertical {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      border: 1px solid blue;
+    }
   </style>
+
   <script>
+    document.addEventListener("keypress", function(event){
+      var x = event.which || event.keyCode;
+      if (x == 32) { // 32 is spacebar key
+        moveBall();
+      }
+    })
     document.addEventListener("click", moveBall);
     document.onmousemove = handleMouseMove;
 
@@ -73,9 +100,8 @@
       const horizontals = document.querySelectorAll('.paddle-horizontal')
       const verticals = document.querySelectorAll('.paddle-vertical')
 
-      // not sure if forEach and Arrow functions work natively yet.
       horizontals.forEach((paddle) => {
-        paddle.style.left = (mouseX - 50) + "px"; // do template literals `` work yet?
+        paddle.style.left = (mouseX - 50) + "px";
       })
       
       verticals.forEach((paddle) => {
@@ -90,34 +116,34 @@
       let left
       const interval = setInterval(go, 10);
       function go(){ 
-        console.log('ball',  ball.offsetTop, ball.offsetLeft)
         top = ball.offsetTop;
         left = ball.offsetLeft;
 
-        if (counter > 100) { 
+        if (counter > 300) { 
           clearInterval(interval)
         } else {
-          ball.style.top = (top + 2) + "px";
-          ball.style.left = (left + 2) + "px";
+          ball.style.top = (top + 3) + "px";
+          ball.style.left = (left + 3) + "px";
           counter++;
         }
       }
     }
-
-    // document.addEventListener('DOMContentLoaded', moveBall(), false)
 </script>
 </head>
 <body>
-  <div class="paddle paddle-horizontal paddle-top"></div>
-  <div class="paddle paddle-horizontal paddle-bottom"></div>
-  <div class="paddle paddle-vertical paddle-left"></div>
-  <div class="paddle paddle-vertical paddle-right"></div>
 
-  <div class="ball"></div>
+  <div class="container-horizontal">
+    <div class="paddle paddle-horizontal paddle-top"></div>
+    <div class="paddle paddle-horizontal paddle-bottom"></div>
+  </div>
 
-  <div class="center">
+  <div class="container-vertical">
+    <div class="paddle paddle-vertical paddle-left"></div>
+    <div class="paddle paddle-vertical paddle-right"></div>
     <h1>Click to start.</h1>
   </div>
+  
+  <div class="ball"></div>
 
 </body>
 </html>
