@@ -69,13 +69,15 @@
   </style>
 
   <script>
+    let interval;
+
     document.addEventListener("keypress", function(event){
       var x = event.which || event.keyCode;
       if (x == 32) { // 32 is spacebar key
-        moveBall();
+        startStop();
       }
     })
-    document.addEventListener("click", moveBall);
+    document.addEventListener("click", startStop);
     document.onmousemove = handleMouseMove;
 
     function handleMouseMove(event) {
@@ -100,24 +102,31 @@
       })
     }
 
-    function moveBall() {
+    function startStop() {
+      console.log('startStop', interval);
+      if (interval) {
+        stopBall();
+      } else {
+        startBall();
+      }
+    }
+
+    function startBall() {
       const ball = document.querySelector('.ball');
-      let counter = 0;
       let top;
       let left
-      const interval = setInterval(go, 10);
-      function go(){ 
+      interval = setInterval(moveBall, 10);
+      function moveBall(){ 
         top = ball.offsetTop;
         left = ball.offsetLeft;
-
-        if (counter > 300) { 
-          clearInterval(interval)
-        } else {
-          ball.style.top = (top + 3) + "px";
-          ball.style.left = (left + 3) + "px";
-          counter++;
-        }
+        ball.style.top = (top + 3) + "px";
+        ball.style.left = (left + 3) + "px";
       }
+    }
+
+    function stopBall() {
+      clearInterval(interval);
+      interval = undefined;
     }
 </script>
 </head>
@@ -130,11 +139,10 @@
     <div class="paddle paddle-vertical paddle-left"></div>
     <div class="paddle paddle-vertical paddle-right"></div>
     
-    <h1>Click to start.</h1>
-    
     <div class="ball"></div>
+
+    <h1>Click to start.</h1>
   </div>
-  
 
 </body>
 </html>
