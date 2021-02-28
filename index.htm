@@ -70,6 +70,9 @@
 
   <script>
     let interval;
+    const ballSize = 25; // px
+    let distanceHorizontal = 3;
+    let distanceVertical = 3;
 
     document.addEventListener("keypress", function(event){
       var x = event.which || event.keyCode;
@@ -103,7 +106,7 @@
     }
 
     function startStop() {
-      console.log('startStop', interval);
+      // console.log('startStop', interval);
       if (interval) {
         stopBall();
       } else {
@@ -119,14 +122,35 @@
       function moveBall(){ 
         top = ball.offsetTop;
         left = ball.offsetLeft;
-        ball.style.top = (top + 3) + "px";
-        ball.style.left = (left + 3) + "px";
+        ball.style.top = (top + distanceVertical) + "px";
+        ball.style.left = (left + distanceHorizontal) + "px";
+        checkBounce(top, left)
       }
     }
 
     function stopBall() {
       clearInterval(interval);
       interval = undefined;
+    }
+
+    function checkBounce(top, left) {
+      const right = left + ballSize
+      const bottom = top + ballSize
+      if (right >= window.innerWidth) {
+        distanceHorizontal = -Math.abs(distanceHorizontal);
+      }
+      if (left <= 0) {
+        distanceHorizontal = Math.abs(distanceHorizontal);
+      }
+
+      if (bottom >= window.innerHeight) {
+        distanceVertical = -Math.abs(distanceVertical);
+      }
+
+      if (top <= 0) {
+        distanceVertical = Math.abs(distanceVertical);
+      }
+      
     }
 </script>
 </head>
