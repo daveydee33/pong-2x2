@@ -78,8 +78,8 @@
     let distanceVertical = 3;
 
     document.addEventListener("keypress", function(event){
-      var x = event.which || event.keyCode;
-      if (x == 32) { // 32 is spacebar key
+      var key = event.which || event.keyCode;
+      if (key == 32) { // 32 is spacebar key
         startStop();
       }
     })
@@ -91,7 +91,7 @@
       const mouseX = event.pageX;
       const mouseY = event.pageY;
       
-      const pTop = document.querySelector('.paddle-top');
+      const top = document.querySelector('.paddle-top');
       const bottom = document.querySelector('.paddle-bottom');
       const left = document.querySelector('.paddle-left');
       const right = document.querySelector('.paddle-right');
@@ -136,22 +136,34 @@
       interval = undefined;
     }
 
-    function checkBounceTEST(top, left) {
-      const right = left + ballSize
-      const bottom = top + ballSize
-      if (right >= window.innerWidth) {
-        distanceHorizontal = -Math.abs(distanceHorizontal);
-      }
-      if (left <= 0) {
-        distanceHorizontal = Math.abs(distanceHorizontal);
-      }
-      if (bottom >= window.innerHeight) {
-        distanceVertical = -Math.abs(distanceVertical);
-      }
-      if (top <= 0) {
-        distanceVertical = Math.abs(distanceVertical);
-      }
+    function resetBall() {
+      const ball = document.querySelector('.ball');
+      const quarterWidth = window.innerWidth / 4;
+      const quarterHeight = window.innerHeight / 4;
+      ball.style.left = (getRandomInt(quarterWidth, (window.innerWidth - quarterWidth))) + "px";
+      ball.style.top = (getRandomInt(quarterHeight, (window.innerHeight - quarterHeight))) + "px";
     }
+
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min) ) + min;
+    }
+
+    // function checkBounceTEST(top, left) {
+    //   const right = left + ballSize
+    //   const bottom = top + ballSize
+    //   if (right >= window.innerWidth) {
+    //     distanceHorizontal = -Math.abs(distanceHorizontal);
+    //   }
+    //   if (left <= 0) {
+    //     distanceHorizontal = Math.abs(distanceHorizontal);
+    //   }
+    //   if (bottom >= window.innerHeight) {
+    //     distanceVertical = -Math.abs(distanceVertical);
+    //   }
+    //   if (top <= 0) {
+    //     distanceVertical = Math.abs(distanceVertical);
+    //   }
+    // }
 
     function checkBounce(bTop, bLeft) {
       const bRight = bLeft + ballSize;
@@ -170,7 +182,11 @@
       const pTop = document.querySelector('.paddle-top');
 
       // Right Paddle
-      if ((bRight >= pRight.offsetLeft) && (bBottom > pRight.offsetTop) && (bTop < pRightBottom)) {
+      if (
+        (bRight >= pRight.offsetLeft) && 
+        (bBottom > pRight.offsetTop) && 
+        (bTop < pRightBottom)
+      ) {
         distanceHorizontal = -Math.abs(distanceHorizontal);
       }
 
@@ -201,7 +217,17 @@
         distanceVertical = Math.abs(distanceVertical);
       }
 
-
+      // Check if out of ball out of bounds / off screen
+      if (
+        (bTop < (0 - ballSize)) || // top
+        (bTop > (pBottom.offsetTop + paddleSizeShort)) || // bottom
+        ((bLeft + ballSize) < 0) || // left
+        (bLeft > (pRight.offsetLeft + paddleSizeShort)) // right
+      ) {
+        console.log('FAIL');
+        // stopBall();
+        resetBall();
+      }
     }
 </script>
 </head>
